@@ -276,3 +276,5 @@ Analytics and monitoring for large organizations.
 As AI-generated content becomes mainstream, the ability to automatically validate information will become increasingly critical. Fact-Check Agent demonstrates how AI can be used not only to generate content but also to improve trust, transparency, and reliability in digital information systems.
 
 
+## Deployed App Link:
+https://factcheckagent001.streamlit.app/
