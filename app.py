@@ -29,34 +29,27 @@ if uploaded_file:
 
     progress = st.progress(0)
 
+
+    all_evidence = []
+
     for i, claim in enumerate(claims):
 
         evidence = search_claim(claim)
-
-        result = verify_claim(
-            claim,
-            evidence
-        )
-
-        try:
-            parsed = json.loads(result)
-
-            rows.append({
-                "Claim": claim,
-                "Status": parsed["status"],
-                "Reason": parsed["reason"],
-                "Correct Fact": parsed["correct_fact"]
-            })
-
-        except:
-            rows.append({
-                "Claim": claim,
-                "Status": "UNKNOWN",
-                "Reason": result,
-                "Correct Fact": ""
-            })
+        all_evidence.append({
+            "claim":claim,
+            "evidence":evidence
+        })
 
         progress.progress((i + 1) / len(claims))
+        result = verify_claim(all_evidence)
+
+    for item in result:
+        rows.append({
+           "Claim": item.get("claim", ""),
+           "Status": item.get("status", "UNKNOWN"),
+           "Reason": item.get("reason", ""),
+           "Correct Fact": item.get("correct_fact", "")
+        })
 
     df = pd.DataFrame(rows)
 

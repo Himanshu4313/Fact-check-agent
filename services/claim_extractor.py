@@ -19,12 +19,25 @@ def extract_claims(text):
     - financial figures
     - technical facts
 
-    Return ONLY JSON array.
+    Return ONLY JSON array of strings.
 
     Text:
     {text[:15000]}
     """
 
-    response = model.generate_content(prompt)
-
-    return json.loads(response.text)
+    response = model.generate_content(
+        prompt,
+        generation_config={
+            "response_mime_type":"application/json"
+        }
+    )
+    
+    if not response.text:
+        print("Empty response received")
+        return []
+    try:
+        return json.loads(response.text)
+    except json.JSONDecodeError as e:
+        print("JSON Decode Error:",e)
+        print("Raw Output:",response.text)
+        return []
